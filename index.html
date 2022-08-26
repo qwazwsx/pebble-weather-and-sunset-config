@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!-- saved from url=(0066)https://yusukesaitoh.com/sketch/pebble/weather-sunrise-sunset.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>Accessible Switch Controls</title>
+<link rel="stylesheet" href="normalize.css" type="text/css">
+<link rel="stylesheet" href="segment.css" type="text/css">
+<style type="text/css" media="screen">
+	body {
+		padding: 16px;
+		font-size: 15px;
+		font-family: Avenir, Verdana, Arial, "游ゴシック", "Yu Gothic", "游ゴシック体", "YuGothic", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "Hiragino Kaku Gothic Pro", "メイリオ", Roboto, Meiryo, sans-serif;
+		-webkit-tap-highlight-color:rgba(0,0,0,0);
+	}
+	h2 {
+		margin: 32px 0 8px;
+		font-size: 1.1rem;
+	}
+	p {
+		margin: 8px 0 8px;
+	}
+
+	h2:first-child {
+		margin-top: 0;
+	}
+	body > *:last-child {
+		display: none !important;
+	}
+</style>
+</head>
+<body class="vsc-initialized" data-new-gr-c-s-check-loaded="14.1076.0" data-gr-ext-installed="">
+	<div id="page1">
+		<h2>Temperature Unit</h2>
+		<select id="temperature_unit" class="segment-select">
+		    <option value="0">Celsius</option>
+		    <option value="1">Fahrenheit</option>
+		</select>
+		<h2>Low Battery Icon</h2>
+		<select id="low_battery_icon" class="segment-select">
+		    <option value="0">Off</option>
+		    <option value="1">On</option>
+		</select>
+		<h2>Bluetooth Disconnected Icon</h2>
+		<select id="bluetooth_icon" class="segment-select">
+		    <option value="0">Off</option>
+		    <option value="1">On</option>
+		</select>
+		<h2>Bluetooth Disconnected Vibration</h2>
+		<select id="bluetooth_vibration" class="segment-select">
+		    <option value="0">Off</option>
+		    <option value="1">On</option>
+		</select>
+	</div>
+<input id="submit_button" type="button" value="Save">
+<input id="cancel_button" type="button" value="Cancel">
+<script src="jquery-1.11.3.min.js"></script>
+<script src="segment.js" type="text/javascript"></script>
+
+<script>
+
+function saveOptions() {
+	var options = {
+		'temperature_unit': parseInt($("#temperature_unit").val(), 10),
+		'low_battery_icon': parseInt($("#low_battery_icon").val(), 10),
+		'bluetooth_icon': parseInt($("#bluetooth_icon").val(), 10),
+		'bluetooth_vibration': parseInt($("#bluetooth_vibration").val(), 10)
+	}
+	return options;
+}
+
+function updateControls() {
+	var temperature_unit = getParam("temperature_unit");
+	if (temperature_unit != '' && typeof temperature_unit !== "undefined") {
+		$("#temperature_unit").val(temperature_unit);
+	}
+	var low_battery_icon = getParam("low_battery_icon");
+	if (low_battery_icon != '' && typeof low_battery_icon !== "undefined") {
+		$("#low_battery_icon").val(low_battery_icon);
+	}
+	var bluetooth_icon = getParam("bluetooth_icon");
+	if (bluetooth_icon != '' && typeof bluetooth_icon !== "undefined") {
+		$("#bluetooth_icon").val(bluetooth_icon);
+	}
+	var bluetooth_vibration = getParam("bluetooth_vibration");
+	if (bluetooth_vibration != '' && typeof bluetooth_vibration !== "undefined") {
+		$("#bluetooth_vibration").val(bluetooth_vibration);
+	}
+}
+
+function getParam(key) {
+    var url   = location.href;
+    parameters    = url.split("?");
+	if (typeof parameters[1] === "undefined") {
+		return;
+	}
+    params   = parameters[1].split("&");
+    var paramsArray = [];
+    for ( i = 0; i < params.length; i++ ) {
+        neet = params[i].split("=");
+        paramsArray.push(neet[0]);
+        paramsArray[neet[0]] = neet[1];
+    }
+    var categoryKey = paramsArray[key];
+    return categoryKey;
+}
+
+$().ready(function() {
+	$("#cancel_button").click(function() {
+		document.location = "pebblejs://close#";
+	});
+	
+	$("#submit_button").click(function() {
+		var location = "pebblejs://close#" + encodeURIComponent(JSON.stringify(saveOptions()));
+		document.location = location;
+	});
+	updateControls();
+});
+</script>
+<script type="text/javascript">
+    jQuery(function ($){
+         $(".segment-select").Segment();
+    });
+</script>
+
+
+
+
+</body></html>
